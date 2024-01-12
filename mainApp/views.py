@@ -17,7 +17,7 @@ import time
 import random
 from gtts import gTTS 
 from serpapi import GoogleSearch
-# DB_FAISS_PATH = '../vectorstore/db_faiss'
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AUDIO_PATH = os.path.join(BASE_DIR, 'static')
@@ -102,29 +102,49 @@ def generate(request):
     if(prompt is None):
         return render(request,'generate.html',{'result':'No Proper prompt found','query':'Wrong Query'})
     elif(prompt == 'no'):
+        params = {
+        "engine": "google",
+        "q": "What is psychology",
+        "api_key": "a311fa34a2134b1cbd930f709a3ad530828ac70a569e30d1c1fd8017a579b682"
+        }
+        search = GoogleSearch(params)
+        results = search.get_dict()
+        organic_results = results["organic_results"]
+        print(organic_results[0])
+        print(organic_results[0]['title'])
+        print(organic_results[0]['link'])
+        link1 = organic_results[0]['link']
+        title1 = organic_results[0]['title']
+        link2 = organic_results[1]['link']
+        title2 = organic_results[1]['title']
+        link3 = organic_results[2]['link']
+        title3 = organic_results[2]['title']
         language = 'en'
         myobj = gTTS(text='This is for the testing purpose for the voicegpt', lang=language, slow=False)
         file_name = make_file_name()
         myobj.save(AUDIO_PATH+"/"+file_name+".mp3") 
         audio_file_path = "../static/"+file_name+".mp3" 
-        return render(request,'generate.html',{'result':'Not found result for a no','query':'User Query','file':audio_file_path})
+        return render(request,'generate.html',
+                      {'result':'Not found result for a no','query':'User Query','file':audio_file_path,
+                       'link1':link1,'link2':link2,'link3':link3,
+                       'title1':title1,'title2':title2,'title3':title3
+                       })
     else:        
         if(len(prompt)>0):
             params = {
-            "engine": "google",
-            "q": "Coffee",
-            "api_key": "a311fa34a2134b1cbd930f709a3ad530828ac70a569e30d1c1fd8017a579b682"
+                "engine": "google",
+                "q": prompt,
+                "api_key": "a311fa34a2134b1cbd930f709a3ad530828ac70a569e30d1c1fd8017a579b682"
             }
-
             search = GoogleSearch(params)
             results = search.get_dict()
             organic_results = results["organic_results"]
-            print(organic_results[0]['title'])
-            print(organic_results[0]['link'])
-            print(organic_results[1]['title'])
-            print(organic_results[1]['link'])
-            print(organic_results[2]['title'])
-            print(organic_results[2]['link'])
+            link1 = organic_results[0]['link']
+            title1 = organic_results[0]['title']
+            link2 = organic_results[1]['link']
+            title2 = organic_results[1]['title']
+            link3 = organic_results[2]['link']
+            title3 = organic_results[2]['title']
             data = final_result(prompt)
             print("Query:", data['query'])
             print("Result:", data['result'])
@@ -135,7 +155,11 @@ def generate(request):
             file_name = make_file_name()
             myobj.save(AUDIO_PATH+"/"+file_name+".mp3")
             audio_file_path = "../static/"+file_name+".mp3" 
-            return render(request,'generate.html',{'result':data['result'],'query':data['query'],'sources':data['source_documents'],'file':audio_file_path})
+            return render(request,'generate.html',{
+                'result':data['result'],'query':data['query'],'sources':data['source_documents'],'file':audio_file_path,
+                'link1':link1,'link2':link2,'link3':link3,
+                'title1':title1,'title2':title2,'title3':title3
+                })
         else:
             return render(request,'generate.html',{'result':'No Proper prompt found'})
             
