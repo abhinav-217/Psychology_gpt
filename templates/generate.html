@@ -29,6 +29,27 @@
         <audio controls autoplay class="d-none">
             <source src={{file}} type="audio/mpeg">
         </audio>
+        <h4>Related Articles</h4>
+        <div class="container mt-4 d-flex flex-row">
+            <div class="card bg-dark mx-2" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{title1}}</h5>
+                  <a href={{link1}} class="btn mt-3 btn-sm btn-primary">Read Now</a>
+                </div>
+              </div>
+            <div class="card bg-dark mx-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{title2}}</h5>
+                    <a href={{link2}} class="btn mt-3 btn-sm btn-primary">Read Now</a>
+                </div>
+              </div>
+            <div class="card bg-dark mx-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{title3}}</h5>
+                    <a href={{link3}} class="btn mt-3 btn-sm btn-primary">Read Now</a>
+                </div>
+              </div>
+        </div>
     </div>
     <div class="container">
         <button id="show_sources" type = "button" class="btn btn-warning btn-sm mt-3">Show Sources</button>
